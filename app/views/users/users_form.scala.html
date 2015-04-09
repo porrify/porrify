@@ -5,30 +5,32 @@
 
 @main("Nuevo usuario") {
 
-<h1>Regístrate en Porrify.com</h1>
+    <h1 id="user-registration-form">Regístrate en Porrify.com</h1>
 
-@helper.form(action = routes.UsersController.createUser) {
+    @form.globalErrors.map(error => <div>@{error.message}</div>)
 
-@inputText(
-field = form("username"),
-args = '_label -> "Usuario"
-)
+    @helper.form(action = routes.UsersController.createUser) {
+    
+        @inputText(
+            field = form("username"),
+            args = '_label -> "Usuario"
+        )
 
-@inputText(
-field = form("email"),
-args = '_label -> "Correo electrónico"
-)
+        @inputText(
+            field = form("email"),
+            args = '_label -> "Correo electrónico"
+        )
 
-@inputPassword(
-field = form("password1"),
-args =  '_label -> "Contraseña"
-)
+        @inputPassword(
+            field = form("password1"),
+            args =  '_label -> "Contraseña"
+        )
 
-@inputPassword(
-field = form("password2"),
-args = '_label -> "Repita su contraseña"
-)
+        @inputPassword(
+            field = form("password2"),
+            args = '_label -> "Repita su contraseña"
+        )
 
-<input type="submit" value="Crear mi cuenta">
-}
+        <input type="submit" name="submitUserDetails" value="Crear mi cuenta">
+    }
 }
