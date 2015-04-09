@@ -1,0 +1,34 @@
+@import model.User
+@import helper._
+
+@(form: Form[(String, String, String, String)])
+
+@main("Nuevo usuario") {
+
+<h1>Regístrate en Porrify.com</h1>
+
+@helper.form(action = routes.UsersController.createUser) {
+
+@inputText(
+field = form("username"),
+args = '_label -> "Usuario"
+)
+
+@inputText(
+field = form("email"),
+args = '_label -> "Correo electrónico"
+)
+
+@inputPassword(
+field = form("password1"),
+args =  '_label -> "Contraseña"
+)
+
+@inputPassword(
+field = form("password2"),
+args = '_label -> "Repita su contraseña"
+)
+
+<input type="submit" value="Crear mi cuenta">
+}
+}
