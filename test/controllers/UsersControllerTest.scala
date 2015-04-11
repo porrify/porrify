@@ -2,14 +2,13 @@ package controllers
 
 import model.User
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Matchers, WordSpec}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.{DatabaseTestSetup, UsersRepositoryForTest}
 
-class UsersControllerTest extends WordSpec with Matchers with ScalaFutures with BeforeAndAfterEach with DatabaseTestSetup {
+class UsersControllerTest extends WordSpec with Matchers with ScalaFutures with BeforeAndAfterEach with BeforeAndAfterAll with DatabaseTestSetup {
 
-	override val databaseName = "testporrify"
 	val usersRepository = UsersRepositoryForTest
 	val controller = new UsersController {
 		override val repository = usersRepository
@@ -18,6 +17,7 @@ class UsersControllerTest extends WordSpec with Matchers with ScalaFutures with 
 
 	override protected def beforeAll() {
 		super.beforeAll()
+		createTestDatabase()
 		usersRepository.createTable()
 	}
 

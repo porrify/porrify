@@ -1,25 +1,31 @@
 package utils
 
-import org.scalatest.BeforeAndAfterAll
+import scala.slick.driver.MySQLDriver.simple._
 
-trait DatabaseTestSetup extends BeforeAndAfterAll {
+trait DatabaseTestSetup {
 
-	self: org.scalatest.Suite =>
+	private val databaseName = "testporrify"
+	private val baseUrl = "jdbc:mysql://localhost"
+	private val url = s"$baseUrl/$databaseName"
+	private val driver = "com.mysql.jdbc.Driver"
+	private val user = "root"
+	private val password = ""
 
-	def databaseName: String
+	def testDb(url: String = url) = Database.forURL(
+		url = url,
+		driver = driver,
+		user = user,
+		password = password
+	)
 
-	override protected def beforeAll(): Unit = {
-		createDatabase()
-	}
-
-	private def createDatabase(): Unit = {
-		import scala.slick.driver.MySQLDriver.simple._
+	def createTestDatabase(): Unit = {
 		import scala.slick.jdbc.{StaticQuery => Q}
 		{
-			Database.forURL("jdbc:mysql://localhost/", driver = "com.mysql.jdbc.Driver", user = "root", password = "") withSession {
+			testDb(baseUrl) withSession {
 				implicit session =>
 					Q.updateNA(s"CREATE DATABASE IF NOT EXISTS `$databaseName`").execute
 			}
 		}
 	}
+
 }

@@ -4,14 +4,13 @@ import model.User
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Matchers, WordSpec}
 import utils.{DatabaseTestSetup, UsersRepositoryForTest}
 
-class UsersRepositoryTest extends WordSpec with Matchers with BeforeAndAfterEach with DatabaseTestSetup {
-
-	override def databaseName: String = "testporrify"
+class UsersRepositoryTest extends WordSpec with Matchers with BeforeAndAfterEach with BeforeAndAfterAll with DatabaseTestSetup {
 
 	val repository = UsersRepositoryForTest
 
 	override protected def beforeAll() {
 		super.beforeAll()
+		createTestDatabase()
 		repository.createTable()
 	}
 

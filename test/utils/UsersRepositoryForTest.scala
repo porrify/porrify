@@ -4,14 +4,9 @@ import repository.UsersRepository
 
 import scala.slick.driver.MySQLDriver.simple._
 
-object UsersRepositoryForTest extends UsersRepository {
+object UsersRepositoryForTest extends UsersRepository with DatabaseTestSetup {
 
-	override val db = Database.forURL(
-		url = s"jdbc:mysql://localhost:3306/testporrify",
-		driver = "com.mysql.jdbc.Driver",
-		user = "root",
-		password = ""
-	)
+	override val db = testDb()
 
 	override def tableName: String = "TEST_USERS"
 

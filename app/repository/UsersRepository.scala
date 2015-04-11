@@ -60,10 +60,10 @@ object UsersRepository extends UsersRepository {
 
 	override val db: MySQLDriver.simple.Database = {
 		Database.forURL(
-			url = readString("db.porrify.url"),
-			driver = readString("db.porrify.driver"),
-			user = readString("db.porrify.user"),
-			password = readString("db.porrify.password")
+			url = s"${readString("db.default.url")}/porrify",
+			driver = readString("db.default.driver"),
+			user = readString("db.default.user"),
+			password = readString("db.default.password")
 		)
 	}
 
