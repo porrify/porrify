@@ -1,1 +1,3 @@
-error.users.invalid_passwords=Las contraseñas no coinciden
+users.successful_creation=Usuario creado
+users.error.password.no_match=Las contraseñas no coinciden
+users.error.username.not_available=Este usuario no se encuentra disponible

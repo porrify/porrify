@@ -1,11 +1,15 @@
 package controllers
 
+import model.User
 import org.apache.commons.lang3.StringUtils
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
+import repository.UsersRepository
 
 trait UsersController extends Controller {
+
+	def repository: UsersRepository
 
 	val form = Form(
 		tuple(
@@ -13,14 +17,15 @@ trait UsersController extends Controller {
 			"email" -> email,
 			"password1" -> nonEmptyText,
 			"password2" -> nonEmptyText
-		).verifying("error.users.invalid_passwords", data => validatePasswords(data))
+		)
+		.verifying("error.users.password.no_match", data => validatePasswords(data._3, data._4))
+		.verifying("error.users.username.not_available", data => validateUsername(data._1))
 	)
 
-	private def validatePasswords(data: (String, String, String, String)): Boolean = {
-		val password1 = data._3
-		val password2 = data._4
-		StringUtils.equals(password1, password2)
-	}
+	private def validatePasswords(password1: String, password2: String): Boolean = StringUtils.equals(password1, password2)
+
+	private def validateUsername(username: String): Boolean = repository.findByUsername(username).isEmpty
+
 
 	def renderUserCreationForm() = Action {
 		Ok(views.html.users.users_form(form))
@@ -31,11 +36,15 @@ trait UsersController extends Controller {
 			form.bindFromRequest.fold(
 				formWithErrors =>
 					BadRequest(views.html.users.users_form(formWithErrors)),
-				user =>
-					Ok("blah")
+				data => {
+					repository.storeUserInDb(User(data))
+					Ok("users.successful_creation")
+				}
 			)
 	}
 
 }
 
-object UsersController extends UsersController
+object UsersController extends UsersController {
+	override def repository = UsersRepository
+}

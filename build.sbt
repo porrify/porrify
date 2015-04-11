@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
 	anorm,
 	cache,
 	ws,
+	"mysql" % "mysql-connector-java" % "5.1.35",
 	"com.typesafe.slick" %% "slick" % "2.1.0",
 	"org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
 )
